@@ -22,9 +22,9 @@ This is
 ## Description of the Problem
 Retail Gas Prices (RGP) are determined in the competitive market. Gas stations
 are surprisingly unsophisticated given that the market in Canada is [$34
-billion](https://www.ibisworld.ca/industry-trends/market-research-reports/retail-trade/gas-stations.html). If pricing is granular it is almost entirely set by regional or
-even station managers and national campaigns do not have the granularity to
-capitalize on market differences.
+billion](https://www.ibisworld.ca/industry-trends/market-research-reports/retail-trade/gas-stations.html). If pricing is granular to the site level, it is almost entirely set
+by regional or even station managers and national campaigns do not have the
+granularity to capitalize on market differences.
 
 There are many facets that go into the definition of a competitive market.
 Cataloguing all features and recording them is a gargantuan task. Instead this
@@ -40,10 +40,6 @@ station on a major highway, one in close proximity to three other competitors
 and one in a rural area will all behave differently.
 
 
-
-Gas stations are generally unsophisticated in their approach to pricing. There
-needs to be a way to 
-
 ## Why the problem is interesting
 
 There is aproximetly [$50 billion L](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2310006601) of motor fuels sold in Canada yearly.
@@ -56,10 +52,11 @@ geographic areas. For example, it is easy to believe that gas stations on
 different sides of a major river or other barrier would price differently.
 
 Secondly, after geographic markets are found, gas stations that are contained
-within the market but behave differently can be further analyzed. For example, a
-suburban area may be a well defined market with similar price fluctuation in
-stations except for one. This will allow an analyst to further investigate this
-one station to find which features make it more profitable (or less). 
+within a similar geographic area, but that price differently can be further
+analyzed. For example, a suburban area may be a well defined market with similar
+price fluctuation in stations except for one. This will allow an analyst to
+further investigate this one station to find which features make it more
+profitable (or less).
 
 These findings could help set prices more efficiently as well as indicate which
 areas are best for future investment. 
@@ -73,16 +70,18 @@ Energy](https://en.wikipedia.org/wiki/Pioneer_Energy) based in Ontario. The [Com
 to divest several stations they believed would form regional monopolies. 
 
 I am also sure marketing departments have segmented promotional efforts based on
-location. 
+location.
 
 Both of these focus on a more macro level geography.
 
 There are many examples of spatial/temporal regression investigating gas prices
 in the economic literature. Some of these are quite granular, although I was
-unable to find any on the same scale as I plan. 
+unable to find any on the same scale as I plan. These are listed in the links
+at the bottom of this proposal.
 
 Further these look at the causal effect of distance on price. My intention is to
-cluster sites and compare them to other clustering techniques such as KNN
+cluster sites and compare them to other clustering techniques such as
+KNN. Some examples of spatial regression can be seen below as well.
 
 
 ## Discussion on your hypothesis is and how your specific solution will improve
@@ -101,7 +100,20 @@ numbers weighted by distance.
 
 After getting a functioning model, I plan on comparing this to clustering
 algorithms such as KNN with a similar number of centroids to the previous model.
-I will then compare the overlap to the model taking into account price.
+I will then compare the overlap to the model taking into account price. This
+geographic comparison will shed light onto unique gas stations.
+
+Further, this model can be adopted by industry to perform experiments on
+individual stations allowing for the discovery of price leaders and even more
+granular market segments.
+
+### Effects of Edgeworth Cycles
+
+[Edgeworth Price Cycles](https://en.wikipedia.org/wiki/Edgeworth_price_cycle) occur in competitive industries where firms find it
+profit maximizing to cut prices until they reach marginal cost. At this point,
+they can profit maximize by increases prices well above marginal cost. This
+cycle repeats, and in the case of retail gas, often on a weekly basis. I plan on
+using this cycle to determine relevant markets. 
 
 ### Additional Features
 I also plan on taking in historic prices for the area on an anualized basis.
@@ -118,4 +130,13 @@ Locational data will be scraped from google maps API.
 
 
 ## Additional Info
+
+https://link.springer.com/article/10.1007/s00168-007-0206-7
+https://www.jstor.org/stable/20111978?read-now=1&googleloggedin=true&seq=1#page_scan_tab_contents
+https://link.springer.com/chapter/10.1007/978-3-7908-2070-6_12
+http://journals.ama.org/doi/abs/10.1509/jmkr.44.4.622?code=amma-site
+https://www.jstor.org/stable/41323223?seq=1%23page_scan_tab_contents
+http://ses.wsu.edu/wp-content/uploads/2015/03/SpatialDifferences.pdf
+http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
+http://darribas.org/gds_scipy16/ipynb_md/08_spatial_regression.html
 
