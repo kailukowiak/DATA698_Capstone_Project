@@ -11,7 +11,7 @@ print("Loading images")
 # driver = webdriver.Firefox(executable_path='/Users/kailukowiak/DATA698_Capstone_Project/geckodriver')
 driver = webdriver.Chrome('/Users/kailukowiak/DATA698_Capstone_Project/scraper_app/scraper/chromedriver')
 ## Script
-
+# commit 
 def ad_closer():
     try:
         xpath = ("//body/div[2]/span//img[@src='https://c.gumgum.com/ads/com/"+
