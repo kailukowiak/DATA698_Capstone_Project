@@ -1,30 +1,54 @@
-# Gas Price Markets
-## Relevant market areas, price leaders and where to invest
+% Created 2018-09-16 Sun 15:27
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Kai Lukowiak}
+\date{\today}
+\title{Gas Price Micro Markets}
+\hypersetup{
+ pdfauthor={Kai Lukowiak},
+ pdftitle={Gas Price Micro Markets},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.1.9)}, 
+ pdflang={English}}
+\begin{document}
 
-Proposal Abstract
+\maketitle
+\begin{abstract}
 
-Gas station pump prices, in competitive markets, are determined by the intersect
-of supply and demand.
+Gas station prices are dependent on competiton. Due to the nature of gasoline
+markets this competition is very local. Industry is not very sophisticated in
+segmenting these micro-markets leaving money on the table.
 
-Laws in the US and Canada require review of mergers which might impact any
-competitive markets. To do this they must pass a *Hypothetical Monopolist Test*
-Citation Needed
+This proposal shows the roadmap to use variation and similarity in regional prices
+and geospatial data to identify these micro-markets and find outliers that are
+close to but otherwise perform differently. 
 
-This involves demonstrating that a monopolist in a relevant market could raise
-prices. The relevant market is determined by a mix of product categories and
-location. In our case, if a gas station was outside the geographic market, they
-would not significantly impact prices of the other market. 
+The end goal is to provide information on these stations along with a framework
+that companies can use to experiment further.
 
-This is
+\end{abstract}
 
-
-
-## Description of the Problem
+\section{Description of the Problem}
+\label{sec:orgad65e28}
 Retail Gas Prices (RGP) are determined in the competitive market. Gas stations
-are surprisingly unsophisticated given that the market in Canada is [$34
-billion](https://www.ibisworld.ca/industry-trends/market-research-reports/retail-trade/gas-stations.html). If pricing is granular to the site level, it is almost entirely set
-by regional or even station managers and national campaigns do not have the
-granularity to capitalize on market differences.
+are surprisingly unsophisticated given that the market in Canada is \href{https://www.ibisworld.ca/industry-trends/market-research-reports/retail-trade/gas-stations.html}{\$34 billion}.
+If pricing is granular to the site level, it is almost entirely set by regional
+or even station managers and national campaigns do not have the granularity to
+capitalize on market differences.
 
 There are many facets that go into the definition of a competitive market.
 Cataloguing all features and recording them is a gargantuan task. Instead this
@@ -40,10 +64,11 @@ station on a major highway, one in close proximity to three other competitors
 and one in a rural area will all behave differently.
 
 
-## Why the problem is interesting
+\section{Why the problem is interesting}
+\label{sec:orgbcc4749}
 
-There is aproximetly [$50 billion L](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2310006601) of motor fuels sold in Canada yearly.
-$\50,000,000,000L \cdot \alpha$ where $\alpha$ is small increase in cents per
+There is aproximetly \href{https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2310006601}{\$50 billion L} of motor fuels sold in Canada yearly.
+\(\50,000,000,000L \cdot \alpha\) where \(\alpha\) is small increase in cents per
 litre (CPL) is still a lot of money. 
 
 Beyond the fiscal incentives, this is an interesting study because it will
@@ -62,12 +87,13 @@ These findings could help set prices more efficiently as well as indicate which
 areas are best for future investment. 
 
 
-## What other approaches have been tried
+\section{What other approaches have been tried}
+\label{sec:org11599b1}
 
 Investigating retail gasoline markets is nothing new. Most recently in Canada,
-[Parkland](https://www.parkland.ca/en/our-businesses/retail/) has a large market of retail stations and merged with [Pioneer
-Energy](https://en.wikipedia.org/wiki/Pioneer_Energy) based in Ontario. The [Competition Bureau](http://www.competitionbureau.gc.ca/eic/site/cb-bc.nsf/eng/04053.html) forced Parkland
-to divest several stations they believed would form regional monopolies. 
+\href{https://www.parkland.ca/en/our-businesses/retail/}{Parkland} has a large market of retail stations and merged with \href{https://en.wikipedia.org/wiki/Pioneer\_Energy}{Pioneer Energy}
+based in Ontario.  The \href{http://www.competitionbureau.gc.ca/eic/site/cb-bc.nsf/eng/04053.html}{Competition Bureau} forced Parkland to divest several
+stations they believed would form regional monopolies.
 
 I am also sure marketing departments have segmented promotional efforts based on
 location.
@@ -84,7 +110,8 @@ cluster sites and compare them to other clustering techniques such as
 KNN. Some examples of spatial regression can be seen below as well.
 
 
-## Discussion on your hypothesis is and how your specific solution will improve
+\section{Discussion on your hypothesis is and how your specific solution will improve}
+\label{sec:org9e342aa}
 
 My hypothesis is that there are anomalous gas stations and unobserved
 sub-regions which can be detected through variance spatial/temporal pricing.
@@ -92,7 +119,7 @@ sub-regions which can be detected through variance spatial/temporal pricing.
 Further, due to my disinterest in causality/interpretation I can use also use
 non-linear techniques that make interpretation difficult.
 
-My first approach will be to use [PySal](https://www.earthdatascience.org/tutorials/intro-to-spatial-regression/) to investigate linear relationships
+My first approach will be to use \href{https://www.earthdatascience.org/tutorials/intro-to-spatial-regression/}{PySal} to investigate linear relationships
 between stores and cluster them by similarity to their prices.
 
 I also plan on investigating other correlation/regression techniques with
@@ -107,20 +134,23 @@ Further, this model can be adopted by industry to perform experiments on
 individual stations allowing for the discovery of price leaders and even more
 granular market segments.
 
-### Effects of Edgeworth Cycles
+\subsection{Effects of Edgeworth Cycles}
+\label{sec:orgcf1686a}
 
-[Edgeworth Price Cycles](https://en.wikipedia.org/wiki/Edgeworth_price_cycle) occur in competitive industries where firms find it
+\href{https://en.wikipedia.org/wiki/Edgeworth\_price\_cycle}{Edgeworth Price Cycles} occur in competitive industries where firms find it
 profit maximizing to cut prices until they reach marginal cost. At this point,
 they can profit maximize by increases prices well above marginal cost. This
 cycle repeats, and in the case of retail gas, often on a weekly basis. I plan on
 using this cycle to determine relevant markets. 
 
-### Additional Features
+\subsection{Additional Features}
+\label{sec:org6637e38}
 I also plan on taking in historic prices for the area on an anualized basis.
 This, along with weather, holiday and macroeconomic information will be added
 to try and remove omitted variable bias.
 
-### Data Acquisition
+\subsection{Data Acquisition}
+\label{sec:org7030e06}
 
 I plan on using a scraping script, AWS Lambda and S3 to find current gas prices
 in Western Canada. Other data like historic weather conditions and gas prices,
@@ -129,14 +159,17 @@ will be found from Stats Can.
 Locational data will be scraped from google maps API.
 
 
-## Additional Info
+\section{Additional Info}
+\label{sec:orgae35d99}
 
-https://link.springer.com/article/10.1007/s00168-007-0206-7
-https://www.jstor.org/stable/20111978?read-now=1&googleloggedin=true&seq=1#page_scan_tab_contents
-https://link.springer.com/chapter/10.1007/978-3-7908-2070-6_12
-http://journals.ama.org/doi/abs/10.1509/jmkr.44.4.622?code=amma-site
-https://www.jstor.org/stable/41323223?seq=1%23page_scan_tab_contents
-http://ses.wsu.edu/wp-content/uploads/2015/03/SpatialDifferences.pdf
-http://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html
-http://darribas.org/gds_scipy16/ipynb_md/08_spatial_regression.html
-
+\begin{itemize}
+\item \url{https://link.springer.com/article/10.1007/s00168-007-0206-7}
+\item \url{https://www.jstor.org/stable/20111978?read-now=1\&googleloggedin=true\&seq=1\#page\_scan\_tab\_contents}
+\item \url{https://link.springer.com/chapter/10.1007/978-3-7908-2070-6\_12}
+\item \url{http://journals.ama.org/doi/abs/10.1509/jmkr.44.4.622?code=amma-site}
+\item \url{https://www.jstor.org/stable/41323223?seq=1\%23page\_scan\_tab\_contents}
+\item \url{http://ses.wsu.edu/wp-content/uploads/2015/03/SpatialDifferences.pdf}
+\item \url{http://www.econ.uiuc.edu/\~lab/workshop/Spatial\_in\_R.html}
+\item \url{http://darribas.org/gds\_scipy16/ipynb\_md/08\_spatial\_regression.html}
+\end{itemize}
+\end{document}
