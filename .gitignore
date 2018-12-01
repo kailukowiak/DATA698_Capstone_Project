@@ -106,3 +106,8 @@ venv.bak/
 # Passwords
 passwords.py
 *~
+/Data
+*.pkl
+.Rproj.user
+.Rhistory
+*xlsx
