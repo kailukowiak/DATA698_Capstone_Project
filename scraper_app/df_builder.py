@@ -1,7 +1,7 @@
 import pandas as pd
 import datetime as dt
 
-weather = pd.read_pickle('weather_data.pkl')
+# weather = pd.read_pickle('weather_data.pkl')
 location = pd.read_pickle('location_df.pkl')
 prices = pd.read_pickle('prices.pkl')
 prices = prices.drop('index', axis=1)
