@@ -1,0 +1,111 @@
+---
+title: "Micro Gasoline Markets"
+author: "Kai Lukowiak"
+date: '2018-12-09'
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source('function.R')
+source('data_manipulator.R')
+```
+
+
+```{r}
+dcast(lab_dt, Cor6~area_name, fun.aggregate = length)
+dcast(lab_dt, Euclid6~area_name, fun.aggregate = length)
+```
+
+
+```{r}
+dend <- calg_clust %>% 
+  color_branches(k=6) %>% 
+  color_labels
+par(mar = c(1,1,1,15)) 
+plot(dend, horiz=TRUE)
+
+```
+
+```{r}
+
+dt[, .(mean_margin = mean(margin, na.rm = T)), by = .(time, area_name)] %>%
+  ggplot(aes(x = time, y = mean_margin, color = area_name)) + 
+  geom_point()
+
+```
+
+```{r}
+lab_dt[area_name == 'vancouver'] %>% 
+  ggplot(aes(x = lat, y = lng, color = as.factor(Cor6))) +
+  geom_point()
+
+```
+
+```{r}
+# drop_vars <- intersect(names(dt), names(lab_dt))
+# ts_cat <- merge(dt, lab_dt, by = 'address')
+# ts_cat[, grep('\\.y', names(ts_cat), value = TRUE) := NULL]
+# setnames(ts_cat, names(ts_cat), gsub("\\.x", "", names(ts_cat)))
+ts_cat <- merge_cleaner(dt, lab_dt, 'address')
+ts_cat[is.na(Euclid6)]
+ts_cat <- ts_cat[complete.cases(ts_cat)]
+
+```
+
+```{r}
+
+ts_cat[area_name == 'vancouver', .(margin_mean = mean(margin, na.rm = T)),
+       by = .(time = round_date(time,unit = 'day'), Cor6)] %>% 
+  ggplot(aes(x = time, y = margin_mean, color = as.factor(Cor6)))+
+  geom_line() +
+  ggtitle("Calgary Variance")
+
+
+```
+
+```{r}
+calg_lab[, .(margin_mean = mean(margin, na.rm = T)), 
+         by = .(time = round_date(time, unit = 'day'),
+                Calg2)]
+
+ts_calg <- merge_cleaner(calg_lab, dt, 'address')
+
+```
+
+```{r}
+ts_cat[, .(margin_mean = mean(margin, na.rm = T)),
+       by = .(time = round_date(time,unit = 'day'), Cor6)] %>% 
+  ggplot(aes(x = time, y = margin_mean, color = as.factor(Cor6)))+
+  geom_line() +
+  ggtitle("Western Canada Variance")
+# ts_cat
+
+```
+
+```{r}
+### CALG crap
+library(ggmap)
+library(OpenStreetMap)
+lat_min <- calg_lab[, min(lat)]
+lat_max <- calg_lab[, max(lat)]
+lng_min <- lat_min <- calg_lab[, min(lng)]
+lng_max <- lat_min <- calg_lab[, max(lng)]
+```
+
+```{r}
+calg_lab %>% 
+  ggplot(aes(lat, lng, color = as.factor(Calg2)))+
+  geom_point()
+
+```
+
+```{r}
+calg_with_all <- lab_dt[area_name == 'calgary']
+calg2 <- merge_cleaner(calg_lab, calg_with_all, 'address')
+```
+
+```{r}
+get_googlemap("calgary", zoom = 12) %>% ggmap()
+```
+

@@ -1,0 +1,155 @@
+---
+title: "EDA"
+author: "Kai Lukowiak"
+date: '2018-11-13'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Packages
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+df = read_csv('./../noDups.csv')
+glimpse(df)
+```
+
+```{r}
+summary(df)
+```
+
+```{r}
+ggplot(data = df, aes(x = margin, fill = area_name)) +
+  geom_histogram(position = 'stack')
+```
+
+```{r}
+ggplot(data = df, aes(x = price, fill = area_name)) +
+  geom_histogram()
+```
+
+
+```{r}
+df %>% group_by(area_name, date) %>% 
+  summarise(Mean = mean(price, na.rm = TRUE)) %>% 
+  ggplot(aes(date, Mean, color = area_name))+
+  geom_line()
+```
+
+```{r}
+df %>% group_by(area_name, date) %>% 
+  summarise(Mean = mean(margin, na.rm = TRUE)) %>% 
+  ggplot(aes(date, Mean, color = area_name))+
+  geom_line()
+```
+
+
+```{r}
+count(df, names) %>% 
+  arrange(-n) %>% 
+  top_n(10) %>% 
+  ggplot(aes(x = reorder(names, -n) , y = n))+
+  geom_bar(stat = 'identity')
+```
+
+```{r}
+df %>% 
+  group_by(names) %>% 
+  summarise(Average = mean(margin, na.rm = TRUE)) %>% 
+  arrange(Average) %>% 
+  head(10) %>% 
+  ggplot(aes(x = reorder(names, - Average) , y = Average))+
+  geom_bar(stat = 'identity') +
+  coord_flip()
+```
+
+
+
+```{r}
+df %>% group_by(area_name, date) %>% 
+  summarise(Mean = mean(margin, na.rm = TRUE)) %>% 
+  ggplot(aes(date, Mean, color = area_name))+
+  geom_line()
+```
+
+```{r fig.height=10}
+df %>% filter(area_name == 'calgary') %>% 
+  group_by(date, names) %>% 
+  summarise(margin = mean(margin)) %>% 
+  fill(margin) %>% 
+  ggplot(aes(x = date, y = margin, color = names))+
+  geom_line() +
+  theme_light()
+
+```
+
+
+```{r fig.height=10}
+namesSample <- df %>% 
+  filter(area_name == 'calgary') %>% 
+  sample_n(50) %>% 
+  select(address)
+
+namesSample <- namesSample$address
+
+df %>% 
+  filter(address %in% namesSample) %>% 
+  ggplot(aes(date, margin)) +
+  geom_line(aes(color = address))
+```
+
+```{r}
+
+df %>% 
+  filter(address %in% namesSample)
+```
+
+
+```{r}
+calg <- df %>% 
+  filter(area_name == 'calgary')
+
+colnames(calg)
+```
+
+
+
+
+
+
+```{r}
+calg_lab %>% 
+  ggplot(aes(lat, lng, color = as.factor(Calg2)))+
+  geom_point()
+```
+
+```{r}
+lab_dt[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = as.factor(Cor6)))+
+  geom_point()
+```
+
+
+```{r}
+ts_cat[, .(margin_mean = mean(margin, na.rm = T)),
+       by = .(time = round_date(time,unit = 'day'), Cor6)] %>% 
+  ggplot(aes(x = time, y = margin_mean, color = as.factor(Cor6)))+
+  geom_line() +
+  ggtitle("Calgary Variance")
+```
+
+```{r}
+ts_cat[, .(margin_mean = mean(margin, na.rm = T)),
+       by = .(time = round_date(time,unit = 'day'), area_name)] %>% 
+  ggplot(aes(x = time, y = margin_mean, color = as.factor(area_name)))+
+  geom_line() +
+  ggtitle("Calgary Variance")
+```
+

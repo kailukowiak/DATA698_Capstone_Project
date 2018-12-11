@@ -1,0 +1,161 @@
+---
+title: "Gas Price Sub Markets"
+author: "Kai Lukowiak"
+date: '2018-12-10'
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+source('function.R')
+source('data_manipulator.R')
+source('knn.R')
+```
+
+## Thesis
+
+*To what extent are submarkets in gasoline prices segmented accross distinct geographic teritories?*
+
+## Problem Overview
+
+Gasoline markets are very local. While there is correlation in price over time between cities this is almost entirely due to crude oil and refining costs. NYC is correlated with Calgary to some extent, but not when you look at margins.
+
+These costs, including transport and called the "rack" in Canada. The (retail price) - rack is the margin. Because the rack to retail (R2R) is independant of the rack, margins are uncorrelated between cities.
+
+## Gas Markets
+- Gas prices are highly competitive
+- The price payed for gasoline only contains a bit of profit for the station
+- Margins of 0 to 10% are the norm. 
+- There is significant fluctiation throught the day and year
+
+## Competition Theory
+
+- Market Power is defined as the ability to small but significant and nontransitory price increase (SNNIP). 
+- Firms have market power when customers can't easily switch to an alternative.
+- Gas from another station accross the street is a suitible alternative. One in another city is not.
+- Thus there is a strong geographic component to this.
+
+
+## Submarkets
+Calgary and Vancouver margins are not correlated, but margins withine calgary are:
+
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+
+p1 <- dt[,
+         .(margin = mean(margin, na.rm = T)),
+         by = .(date(time), area_name)] %>% 
+  ggplot(aes(date, margin, color = area_name)) +
+  geom_line() + 
+  theme(legend.position="bottom")
+
+p2 <- dt[,
+         .(price = mean(price, na.rm = T)),
+         by = .(date(time), area_name)] %>% 
+  ggplot(aes(date, price, color = area_name)) +
+  geom_line()+ 
+  theme(legend.position="bottom")
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+## Correlation
+```{r warning=F, message=F}
+library(Hmisc)
+temp = dt[, .(mean_price = mean(price, na.rm = T), 
+              mean_margin = mean(margin, na.rm = T)), 
+          by = .(area_name, date(time))]
+price_cor <- dcast(data = temp,
+      formula = date~area_name,fun.aggregate = mean, value.var = 'mean_price')
+
+price_cor <- price_cor[complete.cases(price_cor)]
+
+margin_cor <- dcast(data = temp,
+      formula = date~area_name,fun.aggregate = mean, value.var = 'mean_margin')
+margin_cor = margin_cor[complete.cases(margin_cor)]
+
+price_cor <- rcorr(as.matrix(price_cor[, -'date']))
+price_cor$P
+margin_cor <- rcorr(as.matrix(margin_cor[, -'date']))
+
+```
+
+
+##
+```{r}
+margin_cor
+```
+
+so while there is some correlation, it's not nearly as distinct.
+
+
+## Existing Literature
+
+Much work has been done analyzing gasoline markets because they are highly visible and people spend a lot of money on gas.
+
+Existing literature focused on small sample sizes (although considerably more accurate than mine) and spatial regression.
+
+## My Approach
+### Python
+- Scrape GasBuddy.com
+  - Python/AWS/Selenium/Lots of errors
+- Pull location info from google maps API
+  - I had grandiouse ideas to scrape weather and traffic but due to budget limitations, I did not
+  - Python
+- Manipulate data using Pandas Resample
+
+## My Approach
+### R
+I used data.table and TSclust to cluster time series data using two correlation and eucludian distance. I then picked the number of clusters and used this as 'arbitrary' labes.
+
+I then split this into train and test sets and performed KNN classification on this using latitude and longitude.
+
+```{r}
+p1 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_cor_2))+
+  geom_point() + theme(legend.position="none") + ggtitle("Raw Cor 2 Calgary")
+
+p2 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_cor_2))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle('Adjusted Correlated 2 Calgary')
+
+p3 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_cor_5))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Adjusted Cor 5")
+
+p4 <- all_lab[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = adj_cor_12))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("All Adjusted Correlated 12")
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+
+```
+
+
+
+```{r}
+p1 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_cor_2))+
+  geom_point() + theme(legend.position="none") + ggtitle("Raw Cor 2 Calgary")
+
+p2 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_cor_2))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle('Adjusted Correlated 2 Calgary')
+
+p3 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_cor_5))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Adjusted Cor 5")
+
+p4 <- all_lab[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = adj_cor_12))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("All Adjusted Correlated 12")
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+
+```

@@ -111,3 +111,7 @@ passwords.py
 .Rproj.user
 .Rhistory
 *xlsx
+*csv
+*tiff
+*png
+*svg
