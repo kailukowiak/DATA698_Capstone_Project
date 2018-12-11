@@ -28,7 +28,7 @@ tb_cleaner <- function(tb){
   
   tb <- tb[!(time %in% NaRowToAdmit)]
   tb[, time := as.POSIXct(time)]
-  print(paste("The dimesnions of the final DF are:", dim(tb)))
+  # print(paste("The dimesnions of the final DF are:", dim(tb)))
   return(tb)
 }
 

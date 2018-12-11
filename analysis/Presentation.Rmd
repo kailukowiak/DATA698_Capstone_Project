@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-```{r}
+```{r  warning=FALSE, message=FALSE}
 source('function.R')
 source('data_manipulator.R')
 source('knn.R')
@@ -32,19 +32,10 @@ These costs, including transport and called the "rack" in Canada. The (retail pr
 - Margins of 0 to 10% are the norm. 
 - There is significant fluctiation throught the day and year
 
-## Competition Theory
-
-- Market Power is defined as the ability to small but significant and nontransitory price increase (SNNIP). 
-- Firms have market power when customers can't easily switch to an alternative.
-- Gas from another station accross the street is a suitible alternative. One in another city is not.
-- Thus there is a strong geographic component to this.
-
-
 ## Submarkets
-Calgary and Vancouver margins are not correlated, but margins withine calgary are:
+Markets become much less correlated when you compare margins than when you compare prices.
 
-
-```{r}
+```{r   warning=FALSE, message=FALSE}
 library(ggplot2)
 library(gridExtra)
 
@@ -53,6 +44,7 @@ p1 <- dt[,
          by = .(date(time), area_name)] %>% 
   ggplot(aes(date, margin, color = area_name)) +
   geom_line() + 
+  theme_classic() +
   theme(legend.position="bottom")
 
 p2 <- dt[,
@@ -60,12 +52,15 @@ p2 <- dt[,
          by = .(date(time), area_name)] %>% 
   ggplot(aes(date, price, color = area_name)) +
   geom_line()+ 
+  theme_classic()+
   theme(legend.position="bottom")
 
 grid.arrange(p1, p2, nrow = 1)
 ```
 
+
 ## Correlation
+**Prices**
 ```{r warning=F, message=F}
 library(Hmisc)
 temp = dt[, .(mean_price = mean(price, na.rm = T), 
@@ -81,18 +76,19 @@ margin_cor <- dcast(data = temp,
 margin_cor = margin_cor[complete.cases(margin_cor)]
 
 price_cor <- rcorr(as.matrix(price_cor[, -'date']))
-price_cor$P
+round(price_cor$r, 2)
 margin_cor <- rcorr(as.matrix(margin_cor[, -'date']))
 
 ```
 
 
-##
-```{r}
-margin_cor
+## Correlation
+**Margins**
+```{r  warning=FALSE, message=FALSE}
+round(margin_cor$r, 2)
 ```
 
-so while there is some correlation, it's not nearly as distinct.
+so while there is some correlation, it's not nearly as distinct as with prices.
 
 
 ## Existing Literature
@@ -116,7 +112,85 @@ I used data.table and TSclust to cluster time series data using two correlation 
 
 I then split this into train and test sets and performed KNN classification on this using latitude and longitude.
 
-```{r}
+## Graphs
+```{r  warning=FALSE, message=FALSE}
+theme_set(theme_classic())
+p1 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_cor_2))+
+  geom_point() + theme(legend.position="none") + 
+  ggtitle("Raw Corelated 2 Calgary")
+
+p2 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_cor_2))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle('Adjusted Correlated 2 Calgary')
+
+p3 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_eucl_2))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Raw Eucl 2 Calgary")
+
+p4 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_eucl_2))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Adj Eucl 2 Calgary")
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+
+```
+
+## Calgary 5 Sites
+```{r  warning=FALSE, message=FALSE}
+theme_set(theme_classic())
+p1 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_cor_5))+
+  geom_point() + theme(legend.position="none") + 
+  ggtitle("Raw Corelated 5 Calgary")
+
+p2 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_cor_5))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle('Adjusted Correlated 5 Calgary')
+
+p3 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_eucl_5))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Raw Eucl 5 Calgary")
+
+p4 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_eucl_5))+
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Adj Eucl 5 Calgary")
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+
+```
+
+## Western Canada Combined
+```{r  warning=FALSE, message=FALSE}
+p1 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_raw_eucl_2))+
+  geom_point() + theme(legend.position="none") + ggtitle("Raw Euclid 2 Calgary")
+
+p2 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_eucl_2)) +
+  geom_point() + theme(legend.position="none") +
+  ggtitle('Adjusted Euclid 2 Calgary')
+
+p3 <- calg_lab %>% 
+  ggplot(aes(lat, lng, color = calg_adj_eucl_5)) +
+  geom_point() + theme(legend.position="none") +
+  ggtitle("Adjusted Euclid 5 Calgary")
+
+p4 <- all_lab[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = adj_eucl_6)) +
+  geom_point() + theme(legend.position="none") +
+  ggtitle("All Adjusted Euclid 6")
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+
+```
+
+
+## 
+```{r warning=FALSE, message=FALSE}
 p1 <- calg_lab %>% 
   ggplot(aes(lat, lng, color = calg_raw_cor_2))+
   geom_point() + theme(legend.position="none") + ggtitle("Raw Cor 2 Calgary")
@@ -139,27 +213,153 @@ grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 ```
 
+## Best Clustering
 
+```{r  warning=FALSE, message=FALSE}
+p1 <- all_lab[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = raw_cor_6)) +
+  geom_point() + theme(legend.position="none") + 
+  ggtitle("All Raw Cor 6")
 
-```{r}
-p1 <- calg_lab %>% 
-  ggplot(aes(lat, lng, color = calg_raw_cor_2))+
-  geom_point() + theme(legend.position="none") + ggtitle("Raw Cor 2 Calgary")
-
-p2 <- calg_lab %>% 
-  ggplot(aes(lat, lng, color = calg_adj_cor_2))+
+p2 <- all_lab[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = raw_eucl_6))+
   geom_point() + theme(legend.position="none") +
-  ggtitle('Adjusted Correlated 2 Calgary')
+  ggtitle('All Raw Eucl 6')
 
-p3 <- calg_lab %>% 
-  ggplot(aes(lat, lng, color = calg_adj_cor_5))+
+p3 <- all_lab[area_name == 'calgary'] %>% 
+  ggplot(aes(lat, lng, color = adj_cor_6))+
   geom_point() + theme(legend.position="none") +
-  ggtitle("Adjusted Cor 5")
+  ggtitle("All Adjusted Euclid 6")
 
 p4 <- all_lab[area_name == 'calgary'] %>% 
-  ggplot(aes(lat, lng, color = adj_cor_12))+
+  ggplot(aes(lat, lng, color = adj_eucl_6))+
   geom_point() + theme(legend.position="none") +
-  ggtitle("All Adjusted Correlated 12")
+  ggtitle("All Adjusted Eucl 6")
 grid.arrange(p1, p2, p3, p4, nrow = 2)
+```
+
+## Comparison to Vancouver
+
+```{r warning=FALSE, message=FALSE}
+p1 <- all_lab[area_name == 'vancouver'] %>% 
+  ggplot(aes(lat, lng, raw, color = raw_eucl_12)) +
+  geom_point() +  theme(legend.position="none") +
+  ggtitle("All Cor 6 (van)")
+p2 <- van_lab %>% 
+  ggplot(aes(lat, lng, color = van_adj_cor_5)) +
+  geom_point() +  theme(legend.position="none") +
+  ggtitle('Vancouver Adj Cor 2')
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+## Selection
+- I will test more exhaustively in the final project
+- Current analysis focuses on All Raw Euclidian 6.
+
+*How does this perform?*
+
+```{r  warning=FALSE, message=FALSE}
+mod1 <- knn_maker(all_lab[, .(raw_eucl_6, lat, lng)])
+mod1$accuracy_table
+```
+
+
+## Confusion Matrix
+
+```{r}
+confusionMatrix(mod1$accuracy_table)
+```
+
+
+
+## Next Best Alternative
+Taking the most common lable by city:
+```{r}
+mode_clust <- all_lab %>% 
+  dplyr::as_data_frame() %>% 
+  dplyr::group_by(area_name) %>% 
+  dplyr::count(raw_eucl_6, area_name) %>%
+  dplyr::slice(which.max(n)) 
+mode_clust <- data.table(mode_clust)
+
+next_best <- merge(all_lab, mode_clust, by = 'area_name')
+next_best <- next_best[raw_eucl_6.x != 'Cluster_4' & raw_eucl_6.x != "Cluster_6"]
+next_best <- table(next_best[,.(raw_eucl_6.x, raw_eucl_6.y)])
+
+confusionMatrix(next_best)
+# all_lab[, .(count = uniqueN(area_name)), by = .(raw_eucl_6)]
+```
+
+## Results
+*Bad* 
+We can see that this is actually a better clustering metric.
+
+The results are even worse for the adjusted data set
+
+## Individal Cities
+
+Taking the most promissing result for Calgary, the adjusted correlation 2
+```{r}
+mod1 <- knn_maker(calg_lab[, .(calg_adj_cor_2, lat, lng)])
+# print("The tuning K for best CV accuracy is:")
+# mod1$fit$bestTune
+# print("The Accuracy Table is:")
+mod1$accuracy_table
+```
+
+
+## Analysis
+If we chose the most common lable in calgary we get:
+
+```{r}
+calg_lab[, .(count_calg = .N), by = calg_adj_cor_2]
+```
+
+This would only give us an accuracy of `r 84/(74+82)`.
+
+This suggests that aggrigating over entire markets only captures the market, not the sub markets.
+
+
+## Increase K
+If we increase K to 5:
+```{r}
+mod1 <- knn_maker(calg_lab[, .(calg_adj_cor_5, lat, lng)])
+# print("The tuning K for best CV accuracy is:")
+# mod1$fit$bestTune
+print("The Accuracy Table is:")
+mod1$accuracy_table
+```
+
+## Confusion Matrix
+For K=5 for Calgary
+```{r}
+confusionMatrix(mod1$accuracy_table)
 
 ```
+
+
+## Analysis
+
+If we chose the most common lable in calgary we get:
+
+```{r}
+calg_lab[, .(count_calg = .N), by = calg_adj_cor_5]
+```
+
+
+This would give an accuracy of `r 71/ calg_lab[, .N]` which is greater than the KNN accuracy. 
+This leads me to believe that sub markets within cities do not exist.
+
+## Issues
+There are several issues that I faced that might hide a different result.
+
+- The data collection was spoty due to AWS
+- GasBuddy does not have very granular pricing
+- Since no company to my knowlege tries to set prices at the neighborhood level there could still be potential gains from trying too.
+
+## Results
+While the cluster analysis worked well defining different cities, it was a poor predictor of within city markets.
+
+*Explanation*
+Nobody travels accross town for gas (Costco is an exception), but it is only marginally more work to move out of a neighborhood, especially since people commute great distances. Thus, submarkets merge accross cities.
