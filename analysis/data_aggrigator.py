@@ -6,9 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-prices = pd.read_pickle("scraper_app/prices.pkl")
+prices = pd.read_pickle("../scraper_app/prices.pkl")
 
-location = pd.read_pickle("scraper_app/location_df.pkl")
+location = pd.read_pickle("../scraper_app/location_df.pkl")
 
 prices = prices.drop('index', axis=1)
 prices.area_name = prices.area_name.str.lower()
@@ -46,7 +46,7 @@ df.margin.loc[df.area_name.isin(['victoria'])] = \
     df.margin.loc[df.area_name.isin(['victoria'])] - victoria_excise
 
 
-margins = pd.read_csv("scraper_app/city_margins.csv")
+margins = pd.read_csv("../scraper_app/city_margins.csv")
 margins = margins.melt(id_vars='date',
                        value_name='rack',
                        var_name='area_name')
@@ -91,7 +91,7 @@ calg.set_index('time', inplace=True)
 calg = calg.sort_index()
 # %%
 calg['rolling_mean'] = calg.margin.rolling("1d", min_periods=1).mean()
-calg.margin = calg.margin - calg.rolling_mean
+calg['margin_adj'] = calg.margin - calg.rolling_mean
 
 
 # %%
@@ -129,3 +129,31 @@ letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']  # , 'e', 'f', 'g', 'h'
 calg.cluster = calg.cluster.replace([1, 2, 3, 4, 5, 6, 7], letters)
 # calg['cluster_cat'] = calg.cluster
 sns.scatterplot('lat', 'lng', hue='cluster', data=calg)
+
+
+df_t = df.set_index('time')
+df_t = df_t.sort_index()
+tmp = df_t.groupby('area_name')['margin'].resample('1d').mean()
+
+df_t.reset_index(inplace = True)
+
+df_t['day'] = df_t.time.dt.floor("D")
+# df_t['mean_margin'] = tmp.values
+
+# df_t.set_index(['area_name', 'time'], inplace = True)
+# df1 = df_t.join(tmp, rsuffix='_demeaned')
+tmp = tmp.reset_index().rename(index = str, columns={'time': 'day',
+                     'margin': 'daily_mean'})
+df1 = pd.merge(df_t, tmp, on=['area_name', 'day'], how='left')
+df1['no_trend'] = df1.margin - df1.daily_mean
+
+
+df_p = df1.reset_index().pivot('time', 'address', 'no_trend')
+
+df_p = df_p.fillna(method='ffill', limit=72)
+df_p = df_p.fillna(method='bfill', limit=72)
+# tmp = df_p.dropna(axis=1)
+
+cor_mat = tmp.corr()
+
+
