@@ -14,6 +14,7 @@ close to but otherwise perform differently.
 The end goal is to provide information on these stations along with a framework
 that companies can use to experiment further.
 
+
 With proprietary data, this could be turned into an optimization problem,
 however, given that I can only use public data, the problem is one of unsupervised
 learning, specifically clustering. I will use the relationship between pure
@@ -29,7 +30,7 @@ If pricing is granular to the site level, it is almost entirely set by regional
 or even station managers and national campaigns do not have the granularity to
 capitalize on market differences. Companies that set prices at corporate offices
 or have corporate involvement in setting daily prices use [[https://www.gasbuddy.com/][GasBuddy]], or GasBudy
-supplimented data.
+supplemented data.
 
 There are many facets that go into the definition of a competitive market.
 Cataloguing all features and recording them is a gargantuan task. Instead this
@@ -48,7 +49,7 @@ maximizing profit.
 
 ** Why the problem is interesting
 
-There is aproximetly [[https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2310006601][$50 billion L]] of motor fuels sold in Canada yearly.
+There is approximately [[https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=2310006601][$50 billion L]] of motor fuels sold in Canada yearly.
 $\50,000,000,000L \cdot \alpha$ where $\alpha$ is small increase in cents per
 litre (CPL) is still a lot of money. 
 
@@ -113,7 +114,7 @@ to weight to competitors based on distance.
 
 *** K-Means (Weighted)
 Thirdly, I will use clustering algorithms (K-Means) to cluster stations based on
-geography. This will be done using a vector of different centroids (eg: 6:100).
+geography. This will be done using a vector of different centroids (e.g., 6:100).
 This will form clusters based on the shortest geographical distance. These
 geo-clusters will be used to tune the clusters that use margin data.
 
@@ -150,7 +151,7 @@ in blue. The pink set between the blue and green is totally fine.
 Fourthly, I will try a KNN approach. A KNN regression might be very interesting
 from a predictive point of view for any particular gas station so I will report
 the results, but this won't help us out with finding regions. To find regions we
-must use KNN as a classifier. Therefore, we need to lable the data. To do this I
+must use KNN as a classifier. Therefore, we need to label the data. To do this I
 will use K-Means to classify the margins, most likely by city. I will then train
 a KNN model to clasify these. For example, if we were looking for low, medium,
 and high margin areas, we would lable each individual gas station and then train

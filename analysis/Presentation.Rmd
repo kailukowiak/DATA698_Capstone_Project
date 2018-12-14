@@ -108,7 +108,7 @@ Existing literature focused on small sample sizes (although considerably more ac
 
 ## My Approach
 ### R
-I used data.table and TSclust to cluster time series data using two correlation and eucludian distance. I then picked the number of clusters and used this as 'arbitrary' labes.
+I used data.table and TSclust to cluster time series data using correlation and eucludian distance. I then picked the number of clusters and used this as 'arbitrary' labes.
 
 I then split this into train and test sets and performed KNN classification on this using latitude and longitude.
 
@@ -284,18 +284,19 @@ mode_clust <- all_lab %>%
 mode_clust <- data.table(mode_clust)
 
 next_best <- merge(all_lab, mode_clust, by = 'area_name')
-next_best <- next_best[raw_eucl_6.x != 'Cluster_4' & raw_eucl_6.x != "Cluster_6"]
+# next_best <- next_best[raw_eucl_6.x != 'Cluster_4' & raw_eucl_6.x != "Cluster_6"]
 next_best <- table(next_best[,.(raw_eucl_6.x, raw_eucl_6.y)])
-
-confusionMatrix(next_best)
+next_best
+acc <- (107+67+165+32) / sum(colSums(next_best))
+print(paste("The accuracy is:", acc))
+# confusionMatrix(next_best)
 # all_lab[, .(count = uniqueN(area_name)), by = .(raw_eucl_6)]
 ```
 
 ## Results
-*Bad* 
-We can see that this is actually a better clustering metric.
+**Not Great** 
 
-The results are even worse for the adjusted data set
+These results are not incredibly promissing although they do fall within of the 95% CI for the accuracy measure. 
 
 ## Individal Cities
 
@@ -361,5 +362,10 @@ There are several issues that I faced that might hide a different result.
 ## Results
 While the cluster analysis worked well defining different cities, it was a poor predictor of within city markets.
 
-*Explanation*
+**Explanation**
+
 Nobody travels accross town for gas (Costco is an exception), but it is only marginally more work to move out of a neighborhood, especially since people commute great distances. Thus, submarkets merge accross cities.
+
+## Further Work
+
+See hierarchies
