@@ -1,0 +1,29 @@
+#+LATEX_HEADER: \usepackage[margin=0.5in]{geometry}
+#+TITLE:  Gas Price Micro Markets
+#+OPTIONS: toc:nil pp
+\begin{abstract}
+
+Gas station prices are highly dependent on competiton. Due to the nature of gasoline
+markets this competition is very local. Industry is not very sophisticated in
+segmenting these micro-markets leaving money on the table.
+
+This proposal shows the roadmap to use variation and similarity in regional prices
+and geospatial data to identify these micro-markets and find outliers that are
+close to but otherwise perform differently.
+
+The end goal is to provide information on these stations along with a framework
+that companies can use to experiment further.
+
+
+With proprietary data, this could be turned into an optimization problem,
+however, given that I can only use public data, the problem is one of unsupervised
+learning, specifically clustering. I will use the relationship between pure
+geographic clustering and clustering based on geography and margin correlation.
+This has the benefit of creating a quasi supervised learning environment.
+
+\end{abstract}
+
+
+* Problem
+
+Some Text

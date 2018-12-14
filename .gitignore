@@ -116,3 +116,6 @@ passwords.py
 *png
 *svg
 *Rproj
+
+*.zip
+*.tex
