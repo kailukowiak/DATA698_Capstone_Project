@@ -221,6 +221,7 @@ $$
 Profit = (Price - Margin) * f(Price_{firm}, Price_{competitors}, v)
 $$
 
+
 where $v$ is any other feature. 
 
 The firm should then set this to zero and solve for the price.

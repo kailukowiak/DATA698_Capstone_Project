@@ -1,4 +1,4 @@
-Submit your Final Project
+ Submit your Final Project
 
 SUBMISSION REQUIREMENTS
 
@@ -10,7 +10,7 @@ not be included in the paper itself.
 1. In keeping the amount of required pages relatively low, we expect the writing
 to be concise, succinct, and to-the-point.
 1. Key points should be expressed in clear, simple and easy-to-understand
-language.  
+language.
 1. The final project paper, along with supporting commentary -- discussion of
 prior approaches, results of the student's approach, and a final assessment of
 whether the project effectively solved the goal – must be
@@ -20,13 +20,13 @@ papers are prepared in LaTeX, using the collaborative features of online LaTeX
 editors such as overleaf.com or sharelatex.com. Alternately, papers may be
 prepared in Microsoft Word format (Microsoft Word 2010) and delivered in Adobe
 Acrobat PDF format (Adobe Acrobat
-XI Pro).  
+XI Pro).
 1. Written papers shall be prepared on standard 8.5 x 11 inch pages.
 1. Student name and course code must be included in the heading section for all
 pages.
 1. The proposal pages shall be bound along the left side and numbered on the
 bottom, right side. Each page shall have a one-inch margin at the top and
-the bottom and on each side.  
+the bottom and on each side.
 1. Notations of proprietary material and any other identifying information
 printed on each page may be included in the margin.
 1. Text shall be in Times New Roman, 12 point font. However, text included in

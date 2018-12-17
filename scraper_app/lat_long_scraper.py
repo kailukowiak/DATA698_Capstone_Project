@@ -1,7 +1,6 @@
 import googlemaps
 import pandas as pd
-from passwords import google_api_key, connection_string
-from sqlalchemy import create_engine
+from passwords import google_api_key
 import numpy as np
 
 
@@ -61,4 +60,4 @@ loc_df = location_framer(location_dict)
 
 loc_df.to_pickle("location_df.pkl")
 # price_df.to_pickle('prices.pkl')
-con.close()
+

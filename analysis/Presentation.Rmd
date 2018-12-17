@@ -134,7 +134,7 @@ p4 <- calg_lab %>%
   ggplot(aes(lat, lng, color = calg_adj_eucl_2))+
   geom_point() + theme(legend.position="none") +
   ggtitle("Adj Eucl 2 Calgary")
-grid.arrange(p1, p2, p3, p4, nrow = 2)
+pdl <- grid.arrange(p1, p2, p3, p4, nrow = 2)
 
 ```
 

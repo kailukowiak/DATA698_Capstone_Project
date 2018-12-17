@@ -7,6 +7,7 @@ library(lubridate)
 library(dendextend)
 library(circlize)
 library(xts)
+library(caret)
 source('function.R')
 
 # Data cleaning
@@ -16,6 +17,8 @@ dt[, `:=` (V1 = NULL,
 
 raw_marg <- tb_cleaner(fread('table.csv'))
 adj_marg <- tb_cleaner(fread('no_trend.csv'))
+raw_marg[, `:=`(`3407 43rd AveMill Woods, AB`=NULL,
+                `7631 38th AveMill Woods, AB`=NULL)]
 
 calg_raw <- city_selector(raw_marg, dt, 'calgary')
 calg_adj <- city_selector(adj_marg, dt, 'calgary')
