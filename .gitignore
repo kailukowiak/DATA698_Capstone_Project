@@ -119,3 +119,4 @@ passwords.py
 
 *.zip
 *.tex
+!Proposals/kai_lukowiak_capstone.pdf
