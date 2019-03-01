@@ -1,7 +1,7 @@
 #+TITLE:  Gas Price Micro Markets
 #+OPTIONS: toc:nil pp
 
-\begin{abstract}
+* Abstract
 Gas station prices are highly dependent on competition. Due to the nature of
 gasoline markets this competition is very local. Industry does not segment
 markets beyond the city level, potentially leaving profits on the table.
@@ -38,7 +38,7 @@ Further analysis is needed to investigate how different clustering algorithms
 would work, along with different hierarchical cutoff methods.
 
 
-\end{abstract}
+
 
 
 * Bio
