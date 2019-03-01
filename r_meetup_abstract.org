@@ -1,0 +1,51 @@
+#+TITLE:  Gas Price Micro Markets
+#+OPTIONS: toc:nil pp
+
+\begin{abstract}
+Gas station prices are highly dependent on competition. Due to the nature of
+gasoline markets this competition is very local. Industry does not segment
+markets beyond the city level, potentially leaving profits on the table.
+
+Stations are also able to set their own prices to some extent (without the input
+from corporate), introducing variability into pricing.  I use this variation to
+try and identify submarkts.
+
+
+I used python to scrap[[https://www.gasbuddy.com][ gasbuddy.com]] and pandas to clean the time-series data. I
+then imported the data into R and used the package [[https://www.rdocumentation.org/packages/dtwclust/versions/3.1.1/topics/tsclust][tsclust]] to create a
+hierarchical cluster of the data based on euclidean distance and correlation.
+
+Other methods of clustering were investigated, most interestingly, dynamic time
+warping and Frechett Distance. These methods were abandoned because of their
+computationally expensive nature. I did not have the time or budget to set up
+my analysis on a large AWS cluster.
+
+I then set arbitrary cutoffs for the hierarchical clusters and used this
+classification as my labels.
+
+With these labels, created a KNN model to  cluster the gas stations based on
+latitude and longitude. I then used a test set to validate the accuracy of my
+clustering algorithm.
+
+I had very promising results for gas stations that were very close to each
+other, however, I was unable to identify greater submarkets in a specific city
+(e.g., the north west of Calgary).
+
+I believe these poor results are due to the transient nature of markets and the
+poor quality of information gained from scrapping gasbuddy.
+
+Further analysis is needed to investigate how different clustering algorithms
+would work, along with different hierarchical cutoff methods.
+
+
+\end{abstract}
+
+
+* Bio
+
+Kai is a passionate cross-country ski racer and runs two learn to ski websites
+with his mother and a national level coach. He graduated from the University
+of Calgary with a BA-H in Economics and from City University of New York with
+a MS in Data Science. He currently works in the retail gasoline sector. Kai
+loves solving interesting and challenging problems and dreams of one day
+entering the healthcare sector.
