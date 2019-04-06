@@ -46,8 +46,6 @@ p1 <- dt[,
   geom_line() + 
   theme_classic() +
   theme(legend.position="bottom")
-
-
 p2 <- dt[,
          .(price = mean(price, na.rm = T)),
          by = .(date(time), area_name)] %>% 
