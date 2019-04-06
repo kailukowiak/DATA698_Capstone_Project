@@ -1,0 +1,7 @@
+"area_name"	"calgary_Cluster_3"	"calgary_Cluster_5"	"edmonton_Cluster_3"	"edmonton_Cluster_5"	"kelowna_Cluster_6"	"red_deer_Cluster_2"	"red_deer_Cluster_3"	"red_deer_Cluster_6"	"vancouver_Cluster_1"	"vancouver_Cluster_4"	"vancouver_Cluster_6"	"victoria_Cluster_2"
+"calgary"	25	131	0	0	0	0	0	0	0	0	0	0
+"edmonton"	0	0	33	136	0	0	0	0	0	0	0	0
+"kelowna"	0	0	0	0	32	0	0	0	0	0	0	0
+"red_deer"	0	0	0	0	0	32	5	2	0	0	0	0
+"vancouver"	0	0	0	0	0	0	0	0	72	34	1	0
+"victoria"	0	0	0	0	0	0	0	0	0	0	0	38

@@ -112,6 +112,9 @@ passwords.py
 .Rhistory
 *xlsx
 *csv
+# add in one csv
+!/analysis/cleaned_list.csv
+!*/cleaned_list.csv
 *tiff
 *png
 *svg
