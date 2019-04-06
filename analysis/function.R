@@ -12,7 +12,7 @@ tb_cleaner <- function(tb){
   # Column Cleaing 
   bad_stations <- names(naByCols[naByCols >= 100])
   tb[, (bad_stations) := NULL]
-  # Results
+  # Resultsk
   naByCols <- sapply(tb, function(x) sum(is.na(x)))
   naByRow <- apply(tb, 1, function(x) sum(is.na(x)))
   ## ColClean two
