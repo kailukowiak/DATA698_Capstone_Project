@@ -114,6 +114,7 @@ passwords.py
 *csv
 # add in one csv
 !/analysis/cleaned_list.csv
+!*/table.csv
 !*/cleaned_list.csv
 *tiff
 *png
