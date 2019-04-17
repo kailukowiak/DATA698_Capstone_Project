@@ -12,7 +12,7 @@ tb_cleaner <- function(tb){
   # Column Cleaing 
   bad_stations <- names(naByCols[naByCols >= 100])
   tb[, (bad_stations) := NULL]
-  # Results
+  # Resultsk
   naByCols <- sapply(tb, function(x) sum(is.na(x)))
   naByRow <- apply(tb, 1, function(x) sum(is.na(x)))
   ## ColClean two
@@ -103,7 +103,7 @@ knn_maker <- function(dt){
   train_labs <- predict(fit, newdata = train_dt)
   train_labs <- train_dt[, train_preds := train_labs]
   result_list[['preds']] <- preds
-  try(result_list[['conf_mat']] <- conf_mat)
+  # try(result_list[['conf_mat']] <- conf_mat)
   try(result_list[['accuracy_table']] <- accuracy_table)
   result_list[['train_labs']] <- train_labs
   result_list[['k']] <- as.integer(c(fit$bestTune))
